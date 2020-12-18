@@ -11,7 +11,8 @@ import (
 	//"encoding/json"
 	//"os"
 	//"os/exec"
-	//"strings"
+	"io/ioutil"
+	"strings"
 	"time"
 )
 
@@ -20,6 +21,12 @@ const (
 	CPU
 	PROCESOS
 )
+
+type Mem struct {
+	Mem_Tot    string `json:"mem_tot"`
+	Mem_Usada  string `json:"mem_usada"`
+	Porcentaje string `json:"porcentaje"`
+}
 
 var clientes = make(map[*websocket.Conn]string)
 
@@ -74,14 +81,22 @@ func envioInfo() {
 			if err == nil {
 				switch valor {
 				case MEMO:
-					/*data, err := ioutil.ReadFile("/proc/cpu_201113915")
+					data, err := ioutil.ReadFile("/proc/memo_201113915")
 					if err != nil {
 						fmt.Println("File reading error", err)
 						return
 					}
-					texto := string(data)*/
+					texto := string(data)
 
-					if errW := cliente.WriteJSON("Salida PROCESOS"); err != nil {
+					var mem Mem
+
+					datos := strings.Split(texto, "\n")
+
+					mem.Mem_Tot = datos[0]
+					mem.Mem_Usada = datos[1]
+					mem.Porcentaje = datos[2]
+
+					if errW := cliente.WriteJSON(mem); errW != nil {
 						log.Printf("error: %v", errW)
 						cliente.Close()
 						delete(clientes, cliente)
@@ -89,7 +104,7 @@ func envioInfo() {
 
 				case CPU:
 
-					if errW := cliente.WriteJSON("Salida PROCESOS"); err != nil {
+					if errW := cliente.WriteJSON("Salida PROCESOS"); errW != nil {
 						log.Printf("error: %v", errW)
 						cliente.Close()
 						delete(clientes, cliente)
@@ -97,7 +112,7 @@ func envioInfo() {
 
 				case PROCESOS:
 
-					if errW := cliente.WriteJSON("Salida PROCESOS"); err != nil {
+					if errW := cliente.WriteJSON("Salida PROCESOS"); errW != nil {
 						log.Printf("error: %v", errW)
 						cliente.Close()
 						delete(clientes, cliente)

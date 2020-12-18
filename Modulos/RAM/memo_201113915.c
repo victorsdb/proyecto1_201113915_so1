@@ -21,12 +21,9 @@ static int escribir_archivo(struct seq_file *archivo, void *v)
     free_memory = (i.freeram + i.bufferram + cached) * 4;
     usage_memory = total_memory - free_memory;
 
-    seq_printf(archivo, " Memoria Total   :  \t %8lu KB - %8lu MB\n ", total_memory, total_memory / 1024 );
-    seq_printf(archivo, "Memoria Usada   :  \t %8lu KB - %8lu MB\n ", usage_memory, usage_memory / 1024 );
-    seq_printf(archivo, "Memoria Libre   :  \t %8lu KB - %8lu MB\n ", free_memory, free_memory / 1024 );
-    seq_printf(archivo, "Memoria Usada %% :  \t %li %%\n", usage_memory * 100 / total_memory  );
-    seq_printf(archivo, " Memoria Libre %% :  \t %li %%\n", free_memory * 100 / total_memory  );
-
+    seq_printf(archivo, "%li\n",total_memory / 1024 );
+    seq_printf(archivo, "%li\n", usage_memory / 1024 );
+    seq_printf(archivo, "%li\n", usage_memory * 100 / total_memory  );
 	return 0;
 }
 
@@ -48,7 +45,7 @@ static int iniciar(void)
     if(!entry) 
         return -1; 
     else 
-        printk(KERN_INFO "Inicio\n");
+        printk(KERN_INFO "201113915\n");
         
     return 0;
 }
@@ -56,7 +53,7 @@ static int iniciar(void)
 static void salir(void)
 {
     remove_proc_entry("memo_201113915", NULL);
-    printk(KERN_INFO "Final\n");
+    printk(KERN_INFO "Sistemas Operativos 1\n");
 }
 
 module_init(iniciar);

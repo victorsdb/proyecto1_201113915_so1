@@ -1,3 +1,4 @@
+import { AstMemoryEfficientTransformer } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Color, Label, SingleDataSet, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
@@ -7,12 +8,17 @@ const subject = webSocket("ws://localhost:3000/ws");
     
 var datos:number[] = Array.apply(null, new Array(150)).map(Number.prototype.valueOf,0);
 let titulos:string[] = new Array(150);
+
+
 @Component({
   selector: 'app-ram-monitor',
   templateUrl: './ram-monitor.component.html',
   styleUrls: ['./ram-monitor.component.scss']
 })
 export class RamMonitorComponent implements OnInit {
+  public porcentaje = 0;
+  public total = 0;
+  public usada = 0;
   public lineChartData: ChartDataSets[] = [
     {
       data: datos, 
@@ -38,6 +44,7 @@ export class RamMonitorComponent implements OnInit {
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [];
+
   public pieChartColors: Color[] = [
     {
       borderColor: 'rgb(255, 255, 255, 255)',
@@ -47,6 +54,7 @@ export class RamMonitorComponent implements OnInit {
       ]
     },
   ];
+
   constructor() {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
@@ -58,11 +66,13 @@ export class RamMonitorComponent implements OnInit {
   ngOnInit(): void {
     this.leer_datos();
   }
+
   leer_datos(){
     subject.subscribe(
       msg => {
+        var data = JSON.parse(JSON.stringify(msg));
         
-        datos = datos.slice(1,150).concat(1);
+        datos = datos.slice(1,150).concat(data.porcentaje);
 
         this.lineChartData = [
           {
@@ -71,7 +81,14 @@ export class RamMonitorComponent implements OnInit {
             label: 'RAM Utilizada'
           },
         ]
-        console.log(datos);
+
+        this.pieChartData = [100-data.porcentaje, data.porcentaje ];
+        this.porcentaje = data.porcentaje;
+        this.usada = data.mem_usada;
+        this.total = data.mem_tot;
+
+        console.log(msg);
+
       }, 
       err => console.log(err), 
       () => console.log('complete')
