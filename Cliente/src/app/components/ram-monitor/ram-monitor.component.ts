@@ -6,8 +6,8 @@ import { webSocket } from "rxjs/webSocket";
 
 const subject = webSocket("ws://localhost:3000/ws");
     
-var datos:number[] = Array.apply(null, new Array(150)).map(Number.prototype.valueOf,0);
-let titulos:string[] = new Array(150);
+var datos:number[] = Array.apply(null, new Array(30)).map(Number.prototype.valueOf,0);
+let titulos:string[] = new Array(30);
 
 
 @Component({
@@ -58,8 +58,8 @@ export class RamMonitorComponent implements OnInit {
   constructor() {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
-    for(let i = 0; i <= 150; i++){
-      titulos[i]=((300-i*2).toString());
+    for(let i = 0; i <= 30; i++){
+      titulos[i]=((60-i*2).toString());
     }
   }
 

@@ -17,14 +17,18 @@ import (
 )
 
 const (
-	MEMO = iota
-	CPU
-	PROCESOS
+	MEMO     = 0
+	CPU      = 1
+	PROCESOS = 2
 )
 
 type Mem struct {
 	Mem_Tot    string `json:"mem_tot"`
 	Mem_Usada  string `json:"mem_usada"`
+	Porcentaje string `json:"porcentaje"`
+}
+
+type Cpu struct {
 	Porcentaje string `json:"porcentaje"`
 }
 
@@ -38,12 +42,10 @@ var upgrader = websocket.Upgrader{
 }
 
 func serverWs(w http.ResponseWriter, r *http.Request) {
-	log.Println("1-------------------------------------")
 	fmt.Println(r.Host)
 
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println("2-------------------------------------")
 		log.Println(err)
 	}
 	defer ws.Close()
@@ -61,7 +63,6 @@ func reader(conn *websocket.Conn) {
 			break
 		}
 
-		fmt.Println(string(p))
 		clientes[conn] = string(p)
 		if err := conn.WriteMessage(messageType, p); err != nil {
 			log.Println(err)
@@ -101,15 +102,27 @@ func envioInfo() {
 						cliente.Close()
 						delete(clientes, cliente)
 					}
-
+					break
 				case CPU:
+					data, err := ioutil.ReadFile("/proc/cpu_201113915")
+					if err != nil {
+						fmt.Println("File reading error", err)
+						return
+					}
+					texto := string(data)
 
-					if errW := cliente.WriteJSON("Salida PROCESOS"); errW != nil {
+					var cpu Cpu
+
+					datos := strings.Split(texto, "\n")
+
+					cpu.Porcentaje = datos[0]
+
+					if errW := cliente.WriteJSON(cpu); errW != nil {
 						log.Printf("error: %v", errW)
 						cliente.Close()
 						delete(clientes, cliente)
 					}
-
+					break
 				case PROCESOS:
 
 					if errW := cliente.WriteJSON("Salida PROCESOS"); errW != nil {
@@ -117,11 +130,15 @@ func envioInfo() {
 						cliente.Close()
 						delete(clientes, cliente)
 					}
-
+					break
 				}
+
 			}
 		}
-		log.Println("waiting...")
+		if len(clientes) == 0 {
+			log.Println("Listening on :3000...")
+		}
+
 		time.Sleep(2000 * time.Millisecond)
 	}
 }
