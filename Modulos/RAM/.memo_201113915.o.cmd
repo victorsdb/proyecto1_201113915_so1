@@ -1,1 +1,0 @@
-cmd_/home/victorsdb/Documentos/GitHub/proyecto1_201113915_so1/Modulos/RAM/memo_201113915.o := ld -m elf_x86_64  -z max-page-size=0x200000    -r -o /home/victorsdb/Documentos/GitHub/proyecto1_201113915_so1/Modulos/RAM/memo_201113915.o /home/victorsdb/Documentos/GitHub/proyecto1_201113915_so1/Modulos/RAM/main.o

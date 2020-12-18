@@ -1,1 +1,0 @@
-cmd_/home/victorsdb/Documentos/GitHub/proyecto1_201113915_so1/Modulos/CPU/cpu_201113915.mod := { echo  /home/victorsdb/Documentos/GitHub/proyecto1_201113915_so1/Modulos/CPU/main.o /home/victorsdb/Documentos/GitHub/proyecto1_201113915_so1/Modulos/CPU/cpu.o; echo; } > /home/victorsdb/Documentos/GitHub/proyecto1_201113915_so1/Modulos/CPU/cpu_201113915.mod
