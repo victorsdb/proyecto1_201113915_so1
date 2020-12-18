@@ -4,9 +4,9 @@ import { Color, Label, SingleDataSet, monkeyPatchChartJsLegend, monkeyPatchChart
 import { webSocket } from "rxjs/webSocket";
 
 const subject = webSocket("ws://localhost:3000/ws");
-    
-var datos:number[] = Array.apply(null, new Array(150)).map(Number.prototype.valueOf,0);
-let titulos:string[] = new Array(150);
+
+var datos: number[] = new Array(46);
+let titulos: string[] = new Array(46);
 
 @Component({
   selector: 'app-cpu-monitor',
@@ -17,7 +17,7 @@ export class CpuMonitorComponent implements OnInit {
   public porcentaje = 0;
   public lineChartData: ChartDataSets[] = [
     {
-      data: datos, 
+      data: datos,
       label: 'CPU Utilizado'
     },
   ];
@@ -26,7 +26,7 @@ export class CpuMonitorComponent implements OnInit {
   public lineChartColors: Color[] = [
     {
       borderColor: 'rgb(15, 82, 186, 255)',
-      backgroundColor: 'rgba(0,0,0,0)',
+      backgroundColor: 'rgba(208,223,255,1)',
     },
   ];
   public lineChartLegend = true;
@@ -36,7 +36,7 @@ export class CpuMonitorComponent implements OnInit {
   //PIE CHART
   public pieChartOptions: ChartOptions = { responsive: true };
   public pieChartLabels: Label[] = [['CPU', 'Libre'], ['CPU', 'Utilizado']];
-  public pieChartData: SingleDataSet = [300, 500 ];
+  public pieChartData: SingleDataSet = [300, 500];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [];
@@ -44,44 +44,45 @@ export class CpuMonitorComponent implements OnInit {
     {
       borderColor: 'rgb(255, 255, 255, 255)',
       backgroundColor: [
-        'rgba(181,229,80,1)',
-        'rgba(255,82,82,1)'
+        'limegreen',
+        'IndianRed'
       ]
     },
   ];
-  constructor() { 
+  constructor() {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
-    for(let i = 0; i <= 150; i++){
-      titulos[i]=((300-i*2).toString());
+    for (let i = 0; i <= 45; i++) {
+      titulos[i] = ((90 - i * 2).toString());
     }
+    datos = new Array(46);
   }
 
   ngOnInit(): void {
     this.leer_datos();
   }
 
-  leer_datos(){
+  leer_datos() {
     subject.subscribe(
       msg => {
         var data = JSON.parse(JSON.stringify(msg));
-        
-        datos = datos.slice(1,150).concat(data.porcentaje);
+        datos.push(data.porcentaje / 100)
+        datos = datos.slice(1);
 
         this.lineChartData = [
           {
             lineTension: 0.4,
-            data: datos, 
+            data: datos,
             label: 'CPU Utilizado'
           },
         ]
-        
-        this.pieChartData = [100-data.porcentaje, data.porcentaje ];
-        this.porcentaje = data.porcentaje;
+
+        this.pieChartData = [100 - (data.porcentaje / 100), data.porcentaje / 100];
+        this.porcentaje = data.porcentaje / 100;
 
         console.log(msg);
-      }, 
-      err => console.log(err), 
+      },
+      err => console.log(err),
       () => console.log('complete')
     )
     subject.next(1);

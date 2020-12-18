@@ -21,9 +21,10 @@ static int escribir_archivo(struct seq_file *archivo, void *v)
     free_memory = (i.freeram + i.bufferram + cached) * 4;
     usage_memory = total_memory - free_memory;
 
-    seq_printf(archivo, "%li\n",total_memory / 1024 );
-    seq_printf(archivo, "%li\n", usage_memory / 1024 );
-    seq_printf(archivo, "%li\n", usage_memory * 100 / total_memory  );
+    seq_printf(archivo, "%lu\n",total_memory / 1024 );
+    seq_printf(archivo, "%lu\n", usage_memory / 1024 );
+    seq_printf(archivo, "%lu\n", usage_memory * 10000 / total_memory);
+    
 	return 0;
 }
 
@@ -60,5 +61,5 @@ module_init(iniciar);
 module_exit(salir);
 
 MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("Modulo RAM libre");
+MODULE_DESCRIPTION("Modulo Utilización RAM");
 MODULE_AUTHOR("201113915");
