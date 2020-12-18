@@ -8,10 +8,8 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	//"encoding/json"
-	//"os"
-	//"os/exec"
 	"io/ioutil"
+	"os/exec"
 	"strings"
 	"time"
 )
@@ -157,6 +155,20 @@ func envioInfo() {
 						cliente.Close()
 						delete(clientes, cliente)
 					}
+					break
+				default:
+					cmd := exec.Command("kill", "-TERM ", strconv.Itoa(valor))
+
+					if err := cmd.Run(); err != nil {
+						log.Fatal(err)
+					}
+
+					if errW := cliente.WriteJSON("Se elimino el proceso" + strconv.Itoa(valor)); errW != nil {
+						log.Printf("error: %v", errW)
+					}
+					delete(clientes, cliente)
+					cliente.Close()
+
 					break
 				}
 
