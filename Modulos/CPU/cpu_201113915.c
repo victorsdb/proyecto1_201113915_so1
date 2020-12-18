@@ -24,8 +24,6 @@
 #include <linux/sched/cputime.h>
 #include <linux/tick.h>
 
-
-
 unsigned long cpu_user_time(int c)
 {
 	struct kernel_cpustat *base = (struct kernel_cpustat *)((unsigned long)__per_cpu_offset[c]+(unsigned long)&kernel_cpustat);
@@ -111,14 +109,14 @@ int escribir_archivo(struct seq_file *archivo, void *v)
 		sirq   += cpu_sirq_time(c);
 		steal  += cpu_steal_time(c);
 
-		printk(KERN_ALERT "user: %lu\n", cpu_user_time(c));
-		printk(KERN_ALERT "nice: %lu\n", cpu_nice_time(c));
-		printk(KERN_ALERT "sys: %lu\n", cpu_sys_time(c));
-		printk(KERN_ALERT "idle: %lu\n", cpu_idle_time(c));
-		printk(KERN_ALERT "iowait: %lu\n", cpu_iowait_time(c));
-		printk(KERN_ALERT "hi: %lu\n", cpu_hirq_time(c));
-		printk(KERN_ALERT "si: %lu\n", cpu_sirq_time(c));
-		printk(KERN_ALERT "st: %lu\n", cpu_steal_time(c));
+		//printk(KERN_ALERT "user: %lu\n", cpu_user_time(c));
+		//printk(KERN_ALERT "nice: %lu\n", cpu_nice_time(c));
+		//printk(KERN_ALERT "sys: %lu\n", cpu_sys_time(c));
+		//printk(KERN_ALERT "idle: %lu\n", cpu_idle_time(c));
+		//printk(KERN_ALERT "iowait: %lu\n", cpu_iowait_time(c));
+		//printk(KERN_ALERT "hi: %lu\n", cpu_hirq_time(c));
+		//printk(KERN_ALERT "si: %lu\n", cpu_sirq_time(c));
+		//printk(KERN_ALERT "st: %lu\n", cpu_steal_time(c));
 
 		c++;
 		idx = idx >> 1;
@@ -129,12 +127,7 @@ int escribir_archivo(struct seq_file *archivo, void *v)
     usage_cpu = user+nice+sys+hirq+sirq+steal;
     free_cpu = idle+iowait;
 
-	seq_printf(archivo, "CPU Total   :  \t %li \n",  total_cpu);
-    seq_printf(archivo, "CPU Usada   :  \t %li \n",  usage_cpu);
-	seq_printf(archivo, "CPU Libre   :  \t %li \n",  free_cpu);
-    seq_printf(archivo, "CPU Usada %% :  \t %li %%\n", usage_cpu * 100 / total_cpu  );
-    seq_printf(archivo, "CPU Libre %% :  \t %li %%\n", free_cpu * 100 / total_cpu  );
-
+    seq_printf(archivo, "%li\n", usage_cpu * 100 / total_cpu  );
 	return 0;
 }
 
@@ -156,7 +149,7 @@ int  iniciar(void)
     if(!entry) 
         return -1; 
     else 
-        printk(KERN_INFO "Inicio\n");
+        printk(KERN_INFO "Victor Alfonso López Morales\n");
         
     return 0;
 }
@@ -164,7 +157,7 @@ int  iniciar(void)
 void cerrar(void)
 {
     remove_proc_entry("cpu_201113915", NULL);
-    printk(KERN_INFO "Final\n");
+    printk(KERN_INFO "Diciembre 2020\n");
 }
 
 module_init(iniciar);

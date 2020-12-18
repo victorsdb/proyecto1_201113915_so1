@@ -14,7 +14,7 @@ let titulos:string[] = new Array(150);
   styleUrls: ['./cpu-monitor.component.scss']
 })
 export class CpuMonitorComponent implements OnInit {
-
+  public porcentaje = 0;
   public lineChartData: ChartDataSets[] = [
     {
       data: datos, 
@@ -64,8 +64,9 @@ export class CpuMonitorComponent implements OnInit {
   leer_datos(){
     subject.subscribe(
       msg => {
+        var data = JSON.parse(JSON.stringify(msg));
         
-        datos = datos.slice(1,150).concat(1);
+        datos = datos.slice(1,150).concat(data.porcentaje);
 
         this.lineChartData = [
           {
@@ -74,14 +75,16 @@ export class CpuMonitorComponent implements OnInit {
             label: 'CPU Utilizado'
           },
         ]
-        console.log(datos);
+        
+        this.pieChartData = [100-data.porcentaje, data.porcentaje ];
+        this.porcentaje = data.porcentaje;
+
+        console.log(msg);
       }, 
       err => console.log(err), 
       () => console.log('complete')
     )
-    
     subject.next(1);
   }
 
-  
 }
