@@ -93,14 +93,14 @@ int  iniciar(void)
     return 0;
 }
 
-void cerrar(void)
+void salir(void)
 {
     remove_proc_entry("cpu_201113915", NULL);
     printk(KERN_INFO "Diciembre 2020\n");
 }
 
 module_init(iniciar);
-module_exit(cerrar);
+module_exit(salir);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Modulo Utilización CPU");

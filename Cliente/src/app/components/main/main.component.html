@@ -1,1 +1,59 @@
-<p>main works!</p>
+<div class="container">
+    <div class="row justify-content-center">
+  
+      <div class="card mt-5 mx-2 mb-3 bg-info text-white" style="width: 13rem;">
+        <div class="card-header">Procesos en ejecución</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ this.procesosEjecucion }}</h5>
+        </div>
+      </div>
+      <div class="card mt-5 mx-2 mb-3 bg-info text-white" style="width: 13rem;">
+        <div class="card-header">Procesos suspendidos</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ this.procesosSuspendidos }}</h5>
+        </div>
+      </div>
+      <div class="card mt-5 mx-2 mb-3 bg-info text-white" style="width: 13rem;">
+        <div class="card-header">Procesos detenidos</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ this.proccesosDetenidos }}</h5>
+        </div>
+      </div>
+      <div class="card mt-5 mx-2 mb-3 bg-info text-white" style="width: 13rem;">
+        <div class="card-header">Procesos zombie</div>
+        <div class="card-body">
+          <h5 class="card-title"> {{ this.procesosZombie  }} </h5>
+        </div>
+      </div>
+      <div class="card mt-5 mx-2 mb-3 bg-info text-white" style="width: 13rem;">
+        <div class="card-header">Total de procesos</div>
+        <div class="card-body">
+          <h5 class="card-title"> {{ this.totalProcesos  }} </h5>
+        </div>
+      </div>
+    </div>
+  
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">PID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Kill</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let proc of strProcesos">
+            <td></td>
+            <td>{{ proc.pid }}</td>
+            <td>{{ proc.nombre }}</td>
+            <td>{{ proc.estado }}</td>
+            <td> <button class="btn btn-primary"> <i class="fas fa-skull"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+  </div>

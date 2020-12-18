@@ -32,6 +32,15 @@ type Cpu struct {
 	Porcentaje string `json:"porcentaje"`
 }
 
+type Procesos struct {
+	ProcesosEjecucion   string `json:"ejecucion"`
+	ProcesosSuspendidos string `json:"suspendidos"`
+	ProccesosDetenidos  string `json:"detenidos"`
+	ProcesosZombie      string `json:"zombie"`
+	TotalProcesos       string `json:"total"`
+	ListaProceso        string `json:"lista"`
+}
+
 var clientes = make(map[*websocket.Conn]string)
 
 var upgrader = websocket.Upgrader{
@@ -125,7 +134,25 @@ func envioInfo() {
 					break
 				case PROCESOS:
 
-					if errW := cliente.WriteJSON("Salida PROCESOS"); errW != nil {
+					data, err := ioutil.ReadFile("/proc/procesos_201113915")
+					if err != nil {
+						fmt.Println("File reading error", err)
+						return
+					}
+					txtContenidoModulo := string(data)
+
+					var procesos Procesos
+
+					lstContenido := strings.Split(txtContenidoModulo, "\n")
+
+					procesos.ProcesosEjecucion = lstContenido[0]
+					procesos.ProcesosSuspendidos = lstContenido[1]
+					procesos.ProccesosDetenidos = lstContenido[2]
+					procesos.ProcesosZombie = lstContenido[3]
+					procesos.TotalProcesos = lstContenido[4]
+					procesos.ListaProceso = lstContenido[5]
+
+					if errW := cliente.WriteJSON(procesos); errW != nil {
 						log.Printf("error: %v", errW)
 						cliente.Close()
 						delete(clientes, cliente)
