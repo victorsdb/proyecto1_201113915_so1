@@ -4,7 +4,7 @@ Para la instalación de cada modulo unicamente es necesario correr el siguiente 
 ```
     sudo sh install.sh
 ```
-## Contenido del install.sh
+## Creación de instalador
 Dentro del archivo se utilizaron los siguientes comando que luego seran explicados:
 ```s
 make all
