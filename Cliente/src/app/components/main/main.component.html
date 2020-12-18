@@ -12,52 +12,54 @@
   </div>
 
   <div class="row justify-content-center text-center">
-      <div class="card mt-5 mx-2 mb-3 bg-light" style="width: 16rem;">
-        <div class="card-header">
-          <h5 class="card-title">Ejecución</h5>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">{{ this.procesosEjecucion }}</h5>
-        </div>
+    <div class="card mt-5 mx-2 mb-3 bg-light" style="width: 16rem;">
+      <div class="card-header">
+        <h5 class="card-title">Ejecución</h5>
       </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ this.procesosEjecucion }}</h5>
+      </div>
+    </div>
 
-      <div class="card mt-5 mx-2 mb-3 bg-light text-center" style="width: 16rem;">
-        <div class="card-header">
-          <h5 class="card-title">Suspendido</h5>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">{{ this.procesosSuspendidos }}</h5>
-        </div>
+    <div class="card mt-5 mx-2 mb-3 bg-light text-center" style="width: 16rem;">
+      <div class="card-header">
+        <h5 class="card-title">Suspendido</h5>
       </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ this.procesosSuspendidos }}</h5>
+      </div>
+    </div>
 
-      <div class="card mt-5 mx-2 mb-3 bg-light text-center" style="width: 16rem;">
-        <div class="card-header">
-          <h5 class="card-title">Detenidos</h5>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">{{ this.proccesosDetenidos }}</h5>
-        </div>
+    <div class="card mt-5 mx-2 mb-3 bg-light text-center" style="width: 16rem;">
+      <div class="card-header">
+        <h5 class="card-title">Detenidos</h5>
       </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ this.proccesosDetenidos }}</h5>
+      </div>
+    </div>
 
-      <div class="card mt-5 mx-2 mb-3 bg-light text-center" style="width: 16rem;">
-        <div class="card-header">
-          <h5 class="card-title">Zombies</h5>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title"> {{ this.procesosZombie }} </h5>
-        </div>
+    <div class="card mt-5 mx-2 mb-3 bg-light text-center" style="width: 16rem;">
+      <div class="card-header">
+        <h5 class="card-title">Zombies</h5>
       </div>
+      <div class="card-body">
+        <h5 class="card-title"> {{ this.procesosZombie }} </h5>
+      </div>
+    </div>
 
   </div>
 
-  <br/>
-  <br/>
-  <br/>
+  <br />
+  <h1 class=" title text-center">
+    {{respuesta}}
+  </h1>
+  <br />
 
   <div class="panel panel-default">
     <div class="panel-heading">
       <h1 class=" title text-center">
-        Procesos del Sistema Operativo 
+        Procesos del Sistema Operativo
       </h1>
     </div>
     <div class="table-responsive">
@@ -77,11 +79,11 @@
             <td>{{ proc.pid }}</td>
             <td>{{ proc.nombre }}</td>
             <td>{{ proc.estado }}</td>
-            <td class="text-center"> 
-              <button class="btn btn-danger"> 
-                <i class="fas fa-skull-crossbones fa-2x"></i>    
-            </button>
-          </td>
+            <td class="text-center">
+              <button class="btn btn-danger" (click)="matar_proceso(proc.pid)">
+                <i class="fas fa-skull-crossbones fa-2x"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -93,22 +95,22 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
   <script src="js/datatables/datatables.js"></script>
   <script type="text/javascript">
-  $(document).ready(function() {
-    $('.datatable').dataTable({
-      "sPaginationType": "bs_four_button"
-    });	
-    $('.datatable').each(function(){
-      var datatable = $(this);
-      // SEARCH - Add the placeholder for Search and Turn this into in-line form control
-      var search_input = datatable.closest('.dataTables_wrapper').find('div[id$=_filter] input');
-      search_input.attr('placeholder', 'Search');
-      search_input.addClass('form-control input-sm');
-      // LENGTH - Inline-Form control
-      var length_sel = datatable.closest('.dataTables_wrapper').find('div[id$=_length] select');
-      length_sel.addClass('form-control input-sm');
+    $(document).ready(function () {
+      $('.datatable').dataTable({
+        "sPaginationType": "bs_four_button"
+      });
+      $('.datatable').each(function () {
+        var datatable = $(this);
+        // SEARCH - Add the placeholder for Search and Turn this into in-line form control
+        var search_input = datatable.closest('.dataTables_wrapper').find('div[id$=_filter] input');
+        search_input.attr('placeholder', 'Search');
+        search_input.addClass('form-control input-sm');
+        // LENGTH - Inline-Form control
+        var length_sel = datatable.closest('.dataTables_wrapper').find('div[id$=_length] select');
+        length_sel.addClass('form-control input-sm');
+      });
     });
-  });
   </script>
-  
+
 
 </div>

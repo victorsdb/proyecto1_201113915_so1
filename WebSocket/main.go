@@ -157,13 +157,15 @@ func envioInfo() {
 					}
 					break
 				default:
-					cmd := exec.Command("kill", "-TERM ", strconv.Itoa(valor))
 
-					if err := cmd.Run(); err != nil {
-						log.Fatal(err)
+					cmd := exec.Command("sudo", "kill", "-9", strconv.Itoa(valor))
+					_, errC := cmd.Output()
+
+					if errC != nil {
+						fmt.Printf("error: %v", err)
 					}
 
-					if errW := cliente.WriteJSON("Se elimino el proceso" + strconv.Itoa(valor)); errW != nil {
+					if errW := cliente.WriteJSON("Se elimino el proceso PID: " + strconv.Itoa(valor)); errW != nil {
 						log.Printf("error: %v", errW)
 					}
 					delete(clientes, cliente)

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { webSocket } from "rxjs/webSocket";
 
-const conexion = webSocket("ws://localhost:3000/ws");
+const subject = webSocket("ws://localhost:3000/ws");
+const subject2 = webSocket("ws://localhost:3000/ws");
 
 class Proceso {
   id: string = "";
@@ -26,14 +27,16 @@ export class MainComponent implements OnInit {
   public todosprocesos: string[]= [];
   public strProcesos: Proceso[] = new Array;
 
+  public respuesta =  "";
+
   constructor() { }
 
   ngOnInit(): void {
-    this.leer_modulo_procesos();
+    this.leer_procesos();
   }
 
-  leer_modulo_procesos(){
-    conexion.subscribe(
+  leer_procesos(){
+    subject.subscribe(
       msg => {
         var procesos = JSON.parse(JSON.stringify(msg));
         
@@ -57,14 +60,27 @@ export class MainComponent implements OnInit {
           p.estado = pro[3]
 
           this.strProcesos.push(p)
-
-          console.log(p);
         }
       }, 
       err => console.log(err), 
       () => console.log('complete')
     )
-    
-    conexion.next(2);
+    subject.next(2);
+  }
+
+  matar_proceso(proceso:string){
+
+    subject2.subscribe(
+      msg => {
+        var res = JSON.stringify(msg);
+        this.respuesta = res
+        console.log(this.respuesta)
+      }, 
+      err => console.log(err), 
+      () => console.log('complete')
+    )
+
+    subject2.next(parseInt(proceso));
+    console.log("mato proceso");
   }
 }
