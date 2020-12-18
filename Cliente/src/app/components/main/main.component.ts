@@ -61,6 +61,7 @@ export class MainComponent implements OnInit {
 
           this.strProcesos.push(p)
         }
+        this.strProcesos = this.strProcesos.splice(1)
       }, 
       err => console.log(err), 
       () => console.log('complete')

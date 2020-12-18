@@ -70,6 +70,7 @@
             <th scope="col">PID</th>
             <th scope="col">Nombre</th>
             <th scope="col">Estado</th>
+            <th scope="col">Jerarquia</th>
             <th scope="col" class="text-center">Kill</th>
           </tr>
         </thead>
@@ -79,6 +80,7 @@
             <td>{{ proc.pid }}</td>
             <td>{{ proc.nombre }}</td>
             <td>{{ proc.estado }}</td>
+            <td>{{ proc.id }}</td>
             <td class="text-center">
               <button class="btn btn-danger" (click)="matar_proceso(proc.pid)">
                 <i class="fas fa-skull-crossbones fa-2x"></i>
